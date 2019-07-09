@@ -1,10 +1,10 @@
 
 
 library(shiny)
-library(effsize)
-library(car)
 library(ggplot2)
 library(plyr)
+library(car)
+library(effsize)
 
 shinyServer(function(input, output) {
     
@@ -131,7 +131,7 @@ shinyServer(function(input, output) {
       # t and df
       welch.1 <- paste(c("t = ", round(t.test2$statistic,2), ", df = ", round(t.test2$parameter,2), ", "), sep = "")
       
-      # Ausgabe p-Wert
+      # p-value
       welch.2 <- if (t.test2$p.value>= 0.0005) paste(c("p = ", round(t.test2$p.value,3))) else  "p < 0.001"
       
       # Report results

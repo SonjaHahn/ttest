@@ -209,7 +209,7 @@ shinyUI(fluidPage(
 
             tabPanel("About...",
 
-                     h3("Hintergrund und Programmiertechnisches"),
+                     h3("Hintergrund und Code"),
                      
                      br(),
                      
@@ -246,3 +246,4 @@ shinyUI(fluidPage(
     )
 ))
 
+# is it possible to convert instructions to a pdf?
