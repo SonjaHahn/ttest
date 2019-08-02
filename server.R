@@ -2,6 +2,7 @@
 
 library(shiny)
 library(ggplot2)
+library(cowplot)
 library(plyr)
 library(car)
 library(effsize)
@@ -67,22 +68,44 @@ shinyServer(function(input, output) {
       
     })
     
+# do some densitiy curves based in sample means and sds
     
+    output$Dichten <- renderPlot({
+      
+      ggplot(data = data.frame(x = c(0, 100)), aes(x)) +
+        stat_function(fun = dnorm, n = 101, args = list(mean = input$mx, sd = input$sdx), col = "#E69F00", lwd = 1) +
+        stat_function(fun = dnorm, n = 101, args = list(mean = input$my, sd = input$sdy), col = "#56B4E9", lwd = 1) +
+        ylab("") +
+        xlab("")+
+        scale_y_continuous(breaks = NULL) +
+        theme_minimal()
+    })
+        
 # Plot an histogramm of the generated data example
     
     output$histogramms <- renderPlot({
       
       daten_mw <- ddply(daten(), "uV", summarise, aV.mean=mean(aV))
       
-      ggplot(daten(), aes(x=aV, fill=uV)) +
+      cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")
+      
+      p = ggplot(daten(), aes(x=aV, fill=uV)) +
         geom_histogram(alpha=.5, position="identity", binwidth = 5) +
         geom_vline(data=daten_mw, aes(xintercept=aV.mean,  colour=uV),
                    linetype="solid", size=1, show.legend = FALSE) +
         xlab("") +
         ylab("Anzahl")+   
-        ggtitle("für zwei mögliche Stichproben zu den obigen Angaben")+
+        scale_colour_manual(values=cbPalette)+
+        scale_fill_manual(values=cbPalette, labels = c("A","B"))+
         guides(fill=guide_legend(title=NULL)) +
-        theme_minimal()
+        theme_minimal(base_size = 16)
+      
+      if (input$Hist == FALSE) {
+        p = p + 
+          facet_grid(. ~ uV)
+        }
+      
+      p
       
     })
     

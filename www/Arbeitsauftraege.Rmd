@@ -1,0 +1,13 @@
+---
+title: "Arbeitsaufträge"
+subtitle: "App: Vergleich zweier unabhängiger Stichproben [![](info.png){width=13px}](https://github.com/SonjaHahn/ttest)"
+#author: "SH"
+#date: "1.8.2019"
+output: pdf_document
+---
+
+
+```{r child = 'ttest.md'}
+```
+
+
